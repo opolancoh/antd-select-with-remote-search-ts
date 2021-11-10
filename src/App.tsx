@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "antd/dist/antd.css";
+import { Button, Divider, Space } from "antd";
+import SelectWithRemoteSearch from "./components/SelectWithRemoteSearch";
+import SelectWithRemoteSearchLite from "./components/SelectWithRemoteSearchLite";
+import { fetchUserList } from "./services";
 
-function App() {
+import type { UserValue } from "./types";
+
+// Usage of SelectWithRemoteSearch
+const App = () => {
+  const [value, setValue] = React.useState<UserValue[]>([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Space
+      direction="vertical"
+      style={{
+        width: "100%",
+        padding: "24px",
+      }}
+    >
+      <Divider orientation="left">SelectWithRemoteSearch</Divider>
+      <SelectWithRemoteSearch
+        mode="multiple"
+        value={value}
+        placeholder="Select users"
+        fetchOptions={fetchUserList}
+        onChange={(newValue) => {
+          setValue(newValue);
+        }}
+        style={{ width: "100%" }}
+      />
+      <Button onClick={() => setValue([])}>Clear</Button>
+      <Divider orientation="left">SelectWithRemoteSearchLite</Divider>
+      <SelectWithRemoteSearchLite
+        placeholder="Select users"
+        fetchOptions={fetchUserList}
+      />
+    </Space>
   );
-}
+};
 
 export default App;
